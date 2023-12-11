@@ -3,6 +3,10 @@
         margin-top: 3em !important;
         margin-bottom: 7em;
     }
+    .mt-3 a{
+        color: orange !important;
+        text-decoration: none !important;
+    }
 </style>
 
 <div class="container">
@@ -34,7 +38,7 @@
                     @enderror
                 </div>
                 <div class="d-grid">
-                    <button class="btn btn-primary btn-lg" name="submit" type="submit" value="Log In">Log in</button>
+                    <button class="btn btn-success btn-lg" name="submit" type="submit" value="Log In">Log in</button>
                 </div>
             </form>
             <div class="mt-3">

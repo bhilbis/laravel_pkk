@@ -51,7 +51,8 @@ Route::group(['middleware' => ['web']], function () {
 //login
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('/login', [LoginController::class, 'loginOnly'])->name('doLogin');
-Route::post('/logout', [UserController::class, 'doLogout'])->name('logout');
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'doLogout'])->name('doLogout');
 
 //regis
 Route::get('/register', [LoginController::class, 'showRegistrationForm'])->name('register');

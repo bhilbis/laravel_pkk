@@ -24,10 +24,10 @@
 }
 
 .collection-item {
-    background-color: white;
+    background-color: rgb(170, 193, 115);
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(252, 246, 246, 0.1);
     transition: transform 0.3s ease-in-out;
 }
 
@@ -72,7 +72,7 @@
 </style>
     
 <div class="ini">
-    <span class="position-absolute ini-title">menu</span>
+    <h2><span class="position-absolute ini-title">Menu</span></h2>
 </div>
 
 <div class="collection-list mt-5 row gx-0 gy-3 justify-content-center">    

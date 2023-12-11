@@ -16,11 +16,11 @@
     th, td {
         border: 1px solid #ddd;
         padding: 8px;
-        text-align: left;
+        text-align: center;
     }
 
     th {
-        background-color: #f2f2f2;
+        background-color: #4caf50;
     }
 
     #cart-items img {
@@ -131,24 +131,42 @@
                         <th>Total Price</th>
                     </tr>
                 </thead>
+
                 <tbody id="cart-items">
+                    @php
+                        $totalPrice = 0; // Inisialisasi total harga
+                    @endphp
                     @foreach($cart as $id => $item)
                         <tr>
                             <td>{{ $item['order_number'] }}</td>
-                            <td><img src="{{ asset('img/' . $item['image']) }}" alt="{{ $item['name'] }}" width="50"></td>
+                            <td><img src="{{ asset('img/' . $item['image']) }}" alt="{{ $item['name'] }}" style="max-width: 150px; max-height: 80px;"></td>
                             <td>{{ $item['name'] }}</td>
                             <td>${{ $item['price'] }}</td>
                             <td>{{ $item['quantity'] }}</td>
-                            <td>
+                            {{-- <td>
                                 @if(isset($item['total_price']))
                                     ${{ $item['total_price'] }}
                                 @else
                                     ${{ $item['price'] }}
                                 @endif
+                            </td> --}}
+                            <td>
+                                @php
+                                    $itemTotalPrice = isset($item['total_price']) ? $item['total_price'] : $item['price'];
+                                    $totalPrice += $itemTotalPrice;
+                                @endphp
+                                ${{ $itemTotalPrice }}
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
+            </table>
+
+            <table class="mt-3">
+                <tr>
+                    <th>Total Price</th>
+                    <td>${{ $totalPrice }}</td>
+                </tr>
             </table>
 
             <!-- Formulir Metode Pembayaran -->

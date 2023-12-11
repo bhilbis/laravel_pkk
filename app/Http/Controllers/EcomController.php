@@ -29,30 +29,28 @@ class EcomController extends Controller
     {
         $product = Product::findOrFail($id);
         $cart = session()->get('cart', []); 
+        $orderNumber = session()->get('order_number', 1);
+        // $existingOrderNumber = null;
 
-        $existingOrderNumber = null;
+        // foreach ($cart as $existingId => $existingItem) {
+        //     if ($existingItem['order_number']) {
+        //         $existingOrderNumber = $existingItem['order_number'];
+        //         break;
+        //     }
+        // }
 
-        foreach ($cart as $existingId => $existingItem) {
-            if ($existingItem['order_number']) {
-                $existingOrderNumber = $existingItem['order_number'];
-                break;
-            }
-        }
+    // $orderNumber = $existingOrderNumber ?: (count($cart) > 0 ? max(array_column($cart, 'order_number')) + 1 : 1);// Jika sudah ada, gunakan yang sudah ada, jika tidak, tambahkan 1
 
-    $orderNumber = $existingOrderNumber ?: count($cart) + 1; // Jika sudah ada, gunakan yang sudah ada, jika tidak, tambahkan 1
-
-    
         if (isset($cart[$id])) {
             // Jika kunci 'quantity' sudah ada, tambahkan nilainya
+            $orderNumber = $cart[$id]['order_number'];
+
             $cart[$id]['quantity']++;
 
             $cart[$id]['total_price'] = $cart[$id]['quantity'] * $product->price;
-
-            $cart[$id]['order_number'] = $existingOrderNumber;
             } 
-            
-        
         else {
+            $orderNumber = (empty($cart) ? 1 : max(array_column($cart, 'order_number')) + 1);
             // Jika produk belum ada di keranjang, tambahkan produk ke keranjang
             $cart[$id] = [
                 "name" => $product->name,
@@ -63,22 +61,29 @@ class EcomController extends Controller
                 "order_number" => $orderNumber, // Nomor urutan pesanan
             ];
         }
-    
+        
+        session()->put('order_number', $orderNumber);
         session()->put('cart', $cart);
+
+         // Set notifikasi di navbar
+        $cartCount = count($cart);
+        session()->put('cartCount', $cartCount);
         return redirect()->route('cart')->with('success', 'Product has been added to cart!');
     }
     
     
         public function destroy(Request $request)
         {
-            if ($request->id) {
-                $cart = session()->get('cart');
-                if (isset($cart[$request->id])) {
-                    unset($cart[$request->id]);
-                    session()->put('cart', $cart);
+            {
+                if ($request->id) {
+                    $cart = session()->get('cart');
+                    if (isset($cart[$request->id])) {
+                        unset($cart[$request->id]);
+                        session()->put('cart', $cart);
+                    }
+        
+                    session()->flash('success', 'Product successfully deleted.');
                 }
-    
-                session()->flash('success', 'Product successfully deleted.');
             }
         }
 
@@ -147,15 +152,32 @@ class EcomController extends Controller
     {
         $productId = $request->input('productId');
 
-        $cart = session()->get('cart', []);
+    $cart = session()->get('cart', []);
 
-        if (isset($cart[$productId])) {
-            unset($cart[$productId]);
-            session()->put('cart', $cart);
+    if (isset($cart[$productId])) {
+        $removedOrderNumber = $cart[$productId]['order_number'];
+        unset($cart[$productId]);
+
+        // Update order numbers for remaining items
+        foreach ($cart as $id => $item) {
+            if ($item['order_number'] > $removedOrderNumber) {
+                $cart[$id]['order_number']--;
+            }
         }
 
-        return redirect()->back()->with('success', 'Product removed from cart.');
+        // Reset order number if the cart is empty
+        if (empty($cart)) {
+            session()->forget('order_number');
+        }
+
+        // Update notifikasi di navbar
+        $cartCount = count($cart);
+        session()->put('cartCount', $cartCount);
+
+        session()->put('cart', $cart);
+        session()->flash('success', 'Product removed from cart.');
     }
 
+    return redirect()->back();
 }
-
+}

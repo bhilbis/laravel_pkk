@@ -38,7 +38,7 @@ class LoginController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login')->with('success', 'Logout Successfully');
+        return redirect()->route('home')->with('success', 'Logout Successfully');
     }
 
     public function showRegistrationForm()

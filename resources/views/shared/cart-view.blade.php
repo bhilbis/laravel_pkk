@@ -1,16 +1,16 @@
 <style>
     .tabel {
-        margin-top: 6em !important;
         max-width: 800px;
+        margin-top: 6em !important;
         margin: 2em auto;
         background-color: rgb(255, 255, 255);
         padding: 1em;
         border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 21.2em;
+        margin-bottom: 20.5em;
     }
 
-    table {
+    table { 
         width: 100%;
         border-collapse: collapse;
         margin-top: 1em;
@@ -19,7 +19,7 @@
     th, td {
         border: 1px solid #ddd;
         padding: 8px;
-        text-align: left;
+        text-align: center;
     }
 
     th {
@@ -39,9 +39,11 @@
     .quantity-container {
         display: flex;
         align-items: center;
+        justify-content: center;
     }
 
-    .quantity-button {
+    .quantity-button,
+    .remove-button {
         cursor: pointer;
         padding: 5px;
         margin: 0 5px;
@@ -52,21 +54,21 @@
         line-height: 1;
     }
     .remove-button {
-        cursor: pointer;
+        /* cursor: pointer;
         padding: 5px;
         border: 1px solid #ccc;
         border-radius: 3px;
-        background-color: #f8f8f8;
+        background-color: #f8f8f8; */
         color: #e74c3c; /* Warna merah untuk tombol remove */
-        font-size: 14px;
-        line-height: 1;
+        /* font-size: 14px;
+        line-height: 1; */
     }
 </style>
 
 <div id="cart-container" class="tabel mt-2">
     <h2>Cart</h2>
     @if(count($cart) > 0)
-        <table>
+        <table class="text-center">
             <thead>
                 <tr>
                     <th>Order Number</th>
@@ -79,10 +81,13 @@
                 </tr>
             </thead>
             <tbody id="cart-items">
+                @php
+                $totalPrice = 0; // Inisialisasi variabel total harga
+             @endphp
                 @foreach($cart as $id => $item)
                     <tr>
                         <td>{{ $item['order_number'] }}</td>
-                        <td><img src="{{ asset('img/' . $item['image']) }}" alt="{{ $item['name'] }}" width="50"></td>
+                        <td><img src="{{ asset('img/' . $item['image']) }}" alt="{{ $item['name'] }}" style="max-width: 150px; max-height: 80px;"></td>
                         <td>{{ $item['name'] }}</td>
                         <td>${{ $item['price'] }}</td>
                         <td>
@@ -121,10 +126,11 @@
             </tbody>
         </table>
         <a href="{{ route('checkout') }}" class="checkout-button mb-2">Checkout</a>
+        <a href="{{ route('produk') }}" class="checkout-button mb-2">Add product</a>
     @else
         <p>Your cart is empty.</p>
 
-        <a href="{{ route('produk') }}" class="btn btn-primary">Add cart</a>
+        <a href="{{ route('produk') }}" class="btn btn-primary mb-2">Add cart</a>
     @endif
 
     @if(session('success'))
