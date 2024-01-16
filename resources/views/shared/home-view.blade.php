@@ -49,7 +49,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <a href="{{ route('produk') }}">
+            <a href="{{ route('products.index') }}">
             <div class="jumbotron-image"></div>
             </a>
         </div>

@@ -17,7 +17,9 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('image')->nullable();
+            $table->mediumText('penjelasan')->nullable();
             $table->decimal('price');
+            $table->foreignId('categoryId')->constrained('categories');
             $table->timestamps();
         });
     }

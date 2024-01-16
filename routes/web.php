@@ -41,11 +41,17 @@ Route::group(['prefix' => 'cart'], function () {
     ->name('removeProduct');
 });
 
+
 //produkcontroller
-Route::get('/product', [ProductController::class, 'index'])->name('product'); 
+Route::resource('/products', ProductController::class);
+// Route::get('/product', [ProductController::class, 'index'])->name('product.index'); 
+// Route::get('/product/create', [ProductController::class, 'create'])->name('product.create'); 
+// Route::post('/product', [ProductController::class, 'index'])->name('product.store'); 
 
 Route::group(['middleware' => ['web']], function () {
     route::get('/cart',[EcomController::class,'cart'])->name('cart')->middleware('auth');
+    route::get('/products',[EcomController::class,'products'])->name('products')->middleware('auth');
+    Route::resource('/products', ProductController::class)->middleware('auth');
 });
 
 //login

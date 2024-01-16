@@ -126,11 +126,11 @@
             </tbody>
         </table>
         <a href="{{ route('checkout') }}" class="checkout-button mb-2">Checkout</a>
-        <a href="{{ route('produk') }}" class="checkout-button mb-2">Add product</a>
+        <a href="{{ route('products.index') }}" class="checkout-button mb-2">Add product</a>
     @else
         <p>Your cart is empty.</p>
 
-        <a href="{{ route('produk') }}" class="btn btn-primary mb-2">Add cart</a>
+        <a href="{{ route('products.index') }}" class="btn btn-primary mb-2">Add cart</a>
     @endif
 
     @if(session('success'))

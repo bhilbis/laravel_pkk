@@ -79,12 +79,19 @@
     @foreach ($product as $key => $data)
     <div class="col-md-6 col-lg-4 col-xl-3 p-2 best collection-item mx-auto">
         <div class="collection-img position relative">
+            <a href="{{ route('products.show', $data->id) }}">
             <img src="{{ asset ('img/'.$data->image) }}" class="w-100" style="height: 200px; object-fit: cover;">
+        </a>
         </div>
         <div class="collection-text text-center">
             <p class="text-capitalize my-2"> {{ $data->name }}</p>
-            <span class ="fw-bold"> ${{ $data->price }}</span><br>
+            <span class ="fw-bold"> ${{ $data->price }}</span>
             <a href="{{ route('addtocart', ['id' => $data->id]) }}" class="btn btn-primart mt-3">Add to cart</a>
+            <form action="{{ route('products.destroy' , $data->id) }}" method="post">
+                @method('delete ')
+                @csrf
+                <button class="btn btn-danger mt-3">Delete</button>
+            </form>
             </div>
         </div>
         @endforeach
@@ -97,6 +104,10 @@
             </div>
         @endif
     </div>
+
+    <a href="{{ route('products.create') }}">
+        Create product
+    </a>
 
 {{-- <div class="container mt-4">
     <div class="row justify-content-center">

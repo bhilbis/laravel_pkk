@@ -25,7 +25,7 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             // Jika otentikasi berhasil
-            return redirect()->intended('cart'); // Ganti dengan halaman yang sesuai
+            return redirect()->intended('products'); // Ganti dengan halaman yang sesuai
         }
 
         // Redirect ke halaman cart setelah login
